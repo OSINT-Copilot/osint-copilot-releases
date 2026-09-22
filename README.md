@@ -11,16 +11,19 @@ Take the newest build from the [Releases](../../releases) page.
 
 ## Installing the application
 
-Linux is the only platform built today.
-
 | File | For |
 | --- | --- |
 | `osint-copilot_<version>_amd64.deb` | Debian / Ubuntu, x86-64 |
 | `osint-copilot-<version>-x86_64.AppImage` | Any Linux, x86-64 |
 | `osint-copilot-<version>-arm64.AppImage` | Any Linux, arm64 |
+| `OSINT-Copilot-Setup-<version>.exe` | Windows, installs |
+| `OSINT-Copilot-Portable-<version>.exe` | Windows, runs without installing |
 
-The `latest-linux*.yml` files are metadata for the in-app updater. They are not
-downloads; leave them attached to the release or updates will stop working.
+There is no macOS build. It needs an Apple Developer ID certificate and notarization,
+without which macOS will not open the application at all.
+
+The `latest*.yml` files are metadata for the in-app updater. They are not downloads;
+leave them attached to the release or updates will stop working.
 
 ### The .deb, which needs no setup
 
@@ -66,6 +69,16 @@ echo kernel.apparmor_restrict_unprivileged_userns=0 \
 If the AppImage instead reports `Cannot mount AppImage, please check your FUSE
 setup`, run it as `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.0-x86_64.AppImage
 --ozone-platform=x11`.
+
+### Windows
+
+Run `OSINT-Copilot-Setup-<version>.exe`, or `OSINT-Copilot-Portable-<version>.exe` to run
+it without installing.
+
+Windows will stop you the first time, with **"Windows protected your PC"**. The builds are
+not signed yet, and SmartScreen warns about any installer it has not seen signed. Choose
+**More info**, then **Run anyway**. A code-signing certificate is what removes this, and
+getting one is on the list.
 
 ## Installing the browser extension
 
