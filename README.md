@@ -28,7 +28,7 @@ leave them attached to the release or updates will stop working.
 ### The .deb, which needs no setup
 
 ```bash
-sudo apt install ./osint-copilot_0.14.1_amd64.deb
+sudo apt install ./osint-copilot_0.14.2_amd64.deb
 ```
 
 Then start OSINT Copilot from the applications menu. Installing also sets up the
@@ -38,48 +38,27 @@ backend directly.
 ### The AppImage
 
 ```bash
-chmod +x osint-copilot-0.14.1-x86_64.AppImage
-./osint-copilot-0.14.1-x86_64.AppImage
+chmod +x osint-copilot-0.14.2-x86_64.AppImage
+./osint-copilot-0.14.2-x86_64.AppImage
 ```
 
-From 0.14.1 you no longer need `--ozone-platform=x11`. Electron's Wayland backend
-crashes as it opens a window on some systems, so on a Wayland session the app now
-restarts itself once with the X11 backend — which is why it may appear twice in a
-process list for a moment. On 0.14.0 and earlier you had to pass that switch by hand
-or no window ever appeared.
+No flags, no environment variables. From 0.14.2 the application handles the two things that
+used to stop it on Linux:
 
-On **Ubuntu 24.04 and later** the AppImage stops before any window appears:
+* **Wayland.** Electron's Wayland backend crashes as it opens a window on some systems, so on a
+  Wayland session the application restarts once with the X11 backend.
+* **The Chromium sandbox.** Ubuntu 24.04 and later forbid unprivileged user namespaces, and the
+  setuid helper inside an AppImage cannot work, because AppImage contents are mounted `nosuid`.
+  Chromium aborted rather than run unprotected. The application now unpacks itself once into
+  `~/.cache/OSINT Copilot/0.14.2` — an ordinary filesystem, where the sandbox works — and runs
+  from there. The first start says so and takes a few seconds; later starts reuse it, and old
+  versions are deleted.
 
-```
-FATAL:sandbox/linux/suid/client/setuid_sandbox_host.cc:166] The SUID sandbox helper
-binary was found, but is not configured correctly.
-```
+`OC_NO_SELF_INSTALL=1` skips the unpacking and `OC_OZONE=native` skips the restart, if you would
+rather choose for yourself.
 
-Ubuntu blocks the user namespace the sandbox normally uses, so Chromium looks for
-its setuid helper — which cannot work from inside an AppImage, because the
-filesystem an AppImage mounts itself on ignores the setuid bit. Running `chmod` on
-the `.AppImage` file does not help; the file in the message is inside that mount.
-
-Either install the .deb instead, or allow the namespace:
-
-```bash
-sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-echo kernel.apparmor_restrict_unprivileged_userns=0 \
-  | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf     # survives a reboot
-```
-
-If the AppImage instead reports `Cannot mount AppImage, please check your FUSE
-setup`, run it as `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.1-x86_64.AppImage`.
-
-### Windows
-
-Run `OSINT-Copilot-Setup-<version>.exe`, or `OSINT-Copilot-Portable-<version>.exe` to run
-it without installing.
-
-Windows will stop you the first time, with **"Windows protected your PC"**. The builds are
-not signed yet, and SmartScreen warns about any installer it has not seen signed. Choose
-**More info**, then **Run anyway**. A code-signing certificate is what removes this, and
-getting one is on the list.
+If the AppImage will not mount at all — `Cannot mount AppImage, please check your FUSE setup` —
+run `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.2-x86_64.AppImage`, or install `libfuse2`.
 
 ## Installing the browser extension
 
