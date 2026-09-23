@@ -28,23 +28,25 @@ leave them attached to the release or updates will stop working.
 ### The .deb, which needs no setup
 
 ```bash
-sudo apt install ./osint-copilot_0.14.0_amd64.deb
+sudo apt install ./osint-copilot_0.14.1_amd64.deb
 ```
 
 Then start OSINT Copilot from the applications menu. Installing also sets up the
-Chromium sandbox the application runs in, and its menu entry passes the display
-flag the next section explains.
+Chromium sandbox the application runs in, and its menu entry picks the display
+backend directly.
 
 ### The AppImage
 
 ```bash
-chmod +x osint-copilot-0.14.0-x86_64.AppImage
-./osint-copilot-0.14.0-x86_64.AppImage --ozone-platform=x11
+chmod +x osint-copilot-0.14.1-x86_64.AppImage
+./osint-copilot-0.14.1-x86_64.AppImage
 ```
 
-`--ozone-platform=x11` is not optional on most systems: without it the window can
-fail to appear at all, with no error, because Electron's Wayland backend crashes as
-it opens one.
+From 0.14.1 you no longer need `--ozone-platform=x11`. Electron's Wayland backend
+crashes as it opens a window on some systems, so on a Wayland session the app now
+restarts itself once with the X11 backend — which is why it may appear twice in a
+process list for a moment. On 0.14.0 and earlier you had to pass that switch by hand
+or no window ever appeared.
 
 On **Ubuntu 24.04 and later** the AppImage stops before any window appears:
 
@@ -67,8 +69,7 @@ echo kernel.apparmor_restrict_unprivileged_userns=0 \
 ```
 
 If the AppImage instead reports `Cannot mount AppImage, please check your FUSE
-setup`, run it as `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.0-x86_64.AppImage
---ozone-platform=x11`.
+setup`, run it as `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.1-x86_64.AppImage`.
 
 ### Windows
 
