@@ -28,7 +28,7 @@ leave them attached to the release or updates will stop working.
 ### The .deb, which needs no setup
 
 ```bash
-sudo apt install ./osint-copilot_0.14.2_amd64.deb
+sudo apt install ./osint-copilot_0.14.5_amd64.deb
 ```
 
 Then start OSINT Copilot from the applications menu. Installing also sets up the
@@ -38,11 +38,11 @@ backend directly.
 ### The AppImage
 
 ```bash
-chmod +x osint-copilot-0.14.2-x86_64.AppImage
-./osint-copilot-0.14.2-x86_64.AppImage
+chmod +x osint-copilot-0.14.5-x86_64.AppImage
+./osint-copilot-0.14.5-x86_64.AppImage
 ```
 
-No flags, no environment variables. From 0.14.2 the application handles the two things that
+No flags, no environment variables. From 0.14.5 the application handles the two things that
 used to stop it on Linux:
 
 * **Wayland.** Electron's Wayland backend crashes as it opens a window on some systems, so on a
@@ -50,7 +50,7 @@ used to stop it on Linux:
 * **The Chromium sandbox.** Ubuntu 24.04 and later forbid unprivileged user namespaces, and the
   setuid helper inside an AppImage cannot work, because AppImage contents are mounted `nosuid`.
   Chromium aborted rather than run unprotected. The application now unpacks itself once into
-  `~/.cache/OSINT Copilot/0.14.2` — an ordinary filesystem, where the sandbox works — and runs
+  `~/.cache/OSINT Copilot/0.14.5` — an ordinary filesystem, where the sandbox works — and runs
   from there. The first start says so and takes a few seconds; later starts reuse it, and old
   versions are deleted.
 
@@ -58,7 +58,7 @@ used to stop it on Linux:
 rather choose for yourself.
 
 If the AppImage will not mount at all — `Cannot mount AppImage, please check your FUSE setup` —
-run `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.2-x86_64.AppImage`, or install `libfuse2`.
+run `APPIMAGE_EXTRACT_AND_RUN=1 ./osint-copilot-0.14.5-x86_64.AppImage`, or install `libfuse2`.
 
 ## Installing the browser extension
 
