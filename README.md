@@ -93,6 +93,35 @@ feature: capturing a page, and letting highlights reappear when you return to a
 page. Both show the "read your data on all sites" warning, because that is the
 access they need.
 
+## Uninstalling
+
+**If you installed the .deb:**
+
+```bash
+sudo apt remove osint-copilot
+```
+
+**If you used the AppImage**, delete the file, and the copy it unpacks on Ubuntu 24.04 and later:
+
+```bash
+rm -rf ~/.cache/osint-copilot ~/.cache/osint-copilot-updater
+```
+
+That copy is around 400 MB and is recreated on the next start, so it is also the thing to delete
+if a start ever goes wrong and you want a clean one.
+
+**Your own data lives separately**, in `~/.config/OSINT Copilot`: the licence key, the list of
+workspaces, and the browser extension's pairing. Removing the application leaves it alone. Delete
+it only for a completely fresh start — you will have to enter the licence key and pair the
+extension again:
+
+```bash
+rm -rf ~/.config/"OSINT Copilot"
+```
+
+Investigations themselves are ordinary folders wherever you created them, and are never touched by
+any of this.
+
 ## A licence key is required
 
 The application asks for a key before it will open a vault. There is no trial,
